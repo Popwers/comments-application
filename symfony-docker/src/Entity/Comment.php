@@ -18,24 +18,25 @@ class Comment {
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
-    #[Assert\Email]
+    #[Assert\NotBlank(message: 'Veuillez entrer votre email.')]
+    #[Assert\Email(message: 'Veuillez entrer un email valide.')]
     private ?string $email = null;
 
     #[ORM\Column(length: 30)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Veuillez entrer votre prénom.')]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 30)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Veuillez entrer votre nom.')]
     private ?string $lastName = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Veuillez entrer votre date de naissance.')]
+    #[Assert\Date(message: 'Veuillez entrer une date valide.')]
     private ?\DateTimeInterface $birthDate = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Veuillez entrer votre commentaire.')]
     private ?string $text = null;
 
     #[ORM\Column]

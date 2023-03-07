@@ -53,62 +53,67 @@
 			field.message = '';
 		});
 
-		const request = await fetch('https://localhost:4443/api/comments', {
-			method: 'POST',
-			body: JSON.stringify({
-				email: email.value,
-				firstName: firstName.value,
-				lastName: lastName.value,
-				birthDate: birthDate.value,
-				text: comment.value,
-			}),
-			headers: {
-				'Content-type': 'application/json; charset=UTF-8',
-			},
-		});
-
-		const respond = await request.json();
-
-		if (
-			respond['hydra:description'] ===
-			'The data is either an empty string or null, you should pass a string that can be parsed with the passed format or a valid DateTime string.'
-		) {
-			formData.value.birthDate.error = true;
-			formData.value.birthDate.message = 'Veuillez entrer une date valide';
-		}
-
-		if (respond.violations) {
-			respond.violations.forEach((violation: { propertyPath: string; message: string }) => {
-				switch (violation.propertyPath) {
-					case 'email':
-						formData.value.email.error = true;
-						formData.value.email.message = violation.message;
-						break;
-					case 'firstName':
-						formData.value.firstName.error = true;
-						formData.value.firstName.message = violation.message;
-						break;
-					case 'lastName':
-						formData.value.lastName.error = true;
-						formData.value.lastName.message = violation.message;
-						break;
-					case 'birthDate':
-						formData.value.birthDate.error = true;
-						formData.value.birthDate.message = violation.message;
-						break;
-					case 'text':
-						formData.value.comment.error = true;
-						formData.value.comment.message = violation.message;
-						break;
-					default:
-						console.log('Unknown error');
-				}
+		try {
+			const request = await fetch('https://localhost:4443/api/comments', {
+				method: 'POST',
+				body: JSON.stringify({
+					email: email.value,
+					firstName: firstName.value,
+					lastName: lastName.value,
+					birthDate: birthDate.value,
+					text: comment.value,
+				}),
+				headers: {
+					'Content-type': 'application/json; charset=UTF-8',
+				},
 			});
-		}
 
-		if (respond.id) {
-			formData.value.comment.value = '';
-			fetchData();
+			const respond = await request.json();
+
+			if (
+				respond['hydra:description'] ===
+				'The data is either an empty string or null, you should pass a string that can be parsed with the passed format or a valid DateTime string.'
+			) {
+				formData.value.birthDate.error = true;
+				formData.value.birthDate.message = 'Veuillez entrer une date valide';
+			}
+
+			if (respond.violations) {
+				respond.violations.forEach((violation: { propertyPath: string; message: string }) => {
+					switch (violation.propertyPath) {
+						case 'email':
+							formData.value.email.error = true;
+							formData.value.email.message = violation.message;
+							break;
+						case 'firstName':
+							formData.value.firstName.error = true;
+							formData.value.firstName.message = violation.message;
+							break;
+						case 'lastName':
+							formData.value.lastName.error = true;
+							formData.value.lastName.message = violation.message;
+							break;
+						case 'birthDate':
+							formData.value.birthDate.error = true;
+							formData.value.birthDate.message = violation.message;
+							break;
+						case 'text':
+							formData.value.comment.error = true;
+							formData.value.comment.message = violation.message;
+							break;
+						default:
+							console.log('Unknown error');
+					}
+				});
+			}
+
+			if (respond.id) {
+				formData.value.comment.value = '';
+				fetchData();
+			}
+		} catch (error) {
+			formData.value.comment.error = true;
+			formData.value.comment.message = 'Une erreur est survenue ! ';
 		}
 	};
 

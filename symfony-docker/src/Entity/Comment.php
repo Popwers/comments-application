@@ -32,7 +32,6 @@ class Comment {
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotBlank(message: 'Veuillez entrer votre date de naissance.')]
-    #[Assert\Date(message: 'Veuillez entrer une date valide.')]
     private ?\DateTimeInterface $birthDate = null;
 
     #[ORM\Column(type: Types::TEXT)]
